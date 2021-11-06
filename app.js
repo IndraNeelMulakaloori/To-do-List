@@ -16,7 +16,7 @@ const app = express();
 
 const port = 3000;
 
-const days = ["Sun","Mon","Tues","Wednes","Thurs","Fri","Satur"];
+const days = ["Sun", "Mon", "Tues", "Wednes", "Thurs", "Fri", "Satur"];
 
 //Storing the to-do list tasks in an array
 
@@ -31,115 +31,116 @@ mongoose.connect("mongodb://localhost:27017/" + mongoDBName);
 
 //Defining a Schema
 const itemSchema = new mongoose.Schema({
-      name : String,
+    name: String,
 });
 
 //Creating a model from Schema
-const Item = new mongoose.model("item",itemSchema);
+const Item = new mongoose.model("item", itemSchema);
 
 const firstItem = new Item({
-      name : "Eat"
+    name: "Eat"
 });
 
 const secondItem = new Item({
-         name : "Sleep"
+    name: "Sleep"
 });
 
 const thirdItem = new Item({
-   name : "Code",
+    name: "Code",
 });
 
-const defaultItems = [firstItem , secondItem , thirdItem];
-
-// Item.insertMany(defaultItems,function(err)
-// {
-//        if(err)
-//        console.log(err);
-//        else 
-//        console.log("Inserted data Succesfully");
-// });
+const defaultItems = [firstItem, secondItem, thirdItem];
 
 
 //for static content
 app.use(express.static(__dirname + "/public"));
 
 //set express to use ejs view engine
-app.set('view engine','ejs');
+app.set('view engine', 'ejs');
 
-app.use(bodyParser.urlencoded({extended : true}));
+app.use(bodyParser.urlencoded({
+    extended: true
+}));
 
-app.listen(port , function(request,response)
-{
-       console.log("server started at " + port);
+app.listen(port, function (request, response) {
+    console.log("server started at " + port);
 });
 
 //Date notification
 
 
 
-app.get("/",function(request,myServerResponse)
-{    
-       let i = [];
-    Item.find({},function(err,items){
-        if(err)
-        console.log(err);
-        else{
-            myServerResponse.render('list', {
-                kindOfDay : day, 
-                newListItem : items,
-                listType : "Personal List",
-                thisYear : year ,
+app.get("/", function (request, myServerResponse) {
+    //Using Mongoose to read and represent data
+    Item.find({}, function (err, items) {
+        if (err)
+            console.log(err);
+        else {
+            //This code checks if the returned data is empty([]),
+            //Then Insert the data into the DB.
+            //This is due to avoid insertion of duplicate data while restarting the server constantly.
+            if (items.length === 0) {
+                Item.insertMany(defaultItems, function (err) {
+                    if (err)
+                        console.log(err);
+                    else
+                        console.log("Inserted data Succesfully");
+                    myServerResponse.redirect("/");
                 });
+            } else {
+                //Else this Data will render the data to The list.ejs file
+                myServerResponse.render('list', {
+                    kindOfDay: day,
+                    newListItem: items,
+                    listType: "Personal List",
+                    thisYear: year,
+                });
+            }
         }
-   
-   });
-         //render client-side html using ejs template engine
-        
+
+    });
+    //render client-side html using ejs template engine
+
 
 });
 
 //This Post request receives data  from both the routes 
 // and redirects to their respective routes
 // according to the list Type
-app.post("/",function(request,myServerResponse)
-{
+app.post("/", function (request, myServerResponse) {
 
-  
+
 
     const item = request.body.newItem;
-    
-     if(request.body.list === 'Work')
-     {
-         workItems.push(item);
-         myServerResponse.redirect("/work");
-     }
-     
-     else{
+
+    if (request.body.list === 'Work') {
+        workItems.push(item);
+        myServerResponse.redirect("/work");
+    } else {
         items.push(item);
         myServerResponse.redirect("/");
-        }
-    
+    }
+
 
     // newListitem isn't defined as we aren't passing this in get method
     //We can't even pass it  in get method as item isn't initalised/posted
     //This is a problem of scope
 
-//     myServerResponse.render('list' , {
-//            newListItem : item,
-//     }); 
+    //     myServerResponse.render('list' , {
+    //            newListItem : item,
+    //     }); 
 
 
-     
+
 });
 
-app.get("/work",function(request,myServerResponse)
-{
+app.get("/work", function (request, myServerResponse) {
     myServerResponse.render('list', {
-        kindOfDay : day, 
-        newListItem : workItems,
-        listType : 'Work List',
-        thisYear : year,
-        });
+        kindOfDay: day,
+        newListItem: workItems,
+        listType: 'Work List',
+        thisYear: year,
+    });
 
 });
 
