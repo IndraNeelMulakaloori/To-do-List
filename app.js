@@ -109,17 +109,22 @@ app.get("/", function (request, myServerResponse) {
 // according to the list Type
 app.post("/", function (request, myServerResponse) {
 
+    //Post-Data from FORM and Inserting into dataBase i.e todolistDB 
+    const itemName = request.body.newItem;
+    const itemDoc = new Item({
+        name: itemName,
+    });
+    itemDoc.save();
+    
+    myServerResponse.redirect("/");
 
-
-    const item = request.body.newItem;
-
-    if (request.body.list === 'Work') {
-        workItems.push(item);
-        myServerResponse.redirect("/work");
-    } else {
-        items.push(item);
-        myServerResponse.redirect("/");
-    }
+    // if (request.body.list === 'Work') {
+    //     workItems.push(item);
+    //     myServerResponse.redirect("/work");
+    // } else {
+    //     items.push(item);
+    //     myServerResponse.redirect("/");
+    // }
 
 
     // newListitem isn't defined as we aren't passing this in get method
