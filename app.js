@@ -29,9 +29,36 @@ const days = ["Sun","Mon","Tues","Wednes","Thurs","Fri","Satur"];
 const mongoDBName = "todolistDB";
 mongoose.connect("mongodb://localhost:27017/" + mongoDBName);
 
-const itemSchema = mongoose.Schema({
+//Defining a Schema
+const itemSchema = new mongoose.Schema({
       name : String,
 });
+
+//Creating a model from Schema
+const Item = new mongoose.model("item",itemSchema);
+
+const firstItem = new Item({
+      name : "Eat"
+});
+
+const secondItem = new Item({
+         name : "Sleep"
+});
+
+const thirdItem = new Item({
+   name : "Code",
+});
+
+const defaultItems = [firstItem , secondItem , thirdItem];
+
+// Item.insertMany(defaultItems,function(err)
+// {
+//        if(err)
+//        console.log(err);
+//        else 
+//        console.log("Inserted data Succesfully");
+// });
+
 
 //for static content
 app.use(express.static(__dirname + "/public"));
@@ -52,15 +79,22 @@ app.listen(port , function(request,response)
 
 app.get("/",function(request,myServerResponse)
 {    
-       
-         
+       let i = [];
+    Item.find({},function(err,items){
+        if(err)
+        console.log(err);
+        else{
+            myServerResponse.render('list', {
+                kindOfDay : day, 
+                newListItem : items,
+                listType : "Personal List",
+                thisYear : year ,
+                });
+        }
+   
+   });
          //render client-side html using ejs template engine
-        myServerResponse.render('list', {
-                    kindOfDay : day, 
-                    newListItem : items,
-                    listType : "Personal List",
-                    thisYear : year ,
-                    });
+        
 
 });
 
