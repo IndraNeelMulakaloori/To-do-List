@@ -2,6 +2,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const calendars = require(__dirname + "/calendar.js");
+const mongoose = require('mongoose');
 
 
 // importing a class from module and using methods
@@ -19,9 +20,18 @@ const days = ["Sun","Mon","Tues","Wednes","Thurs","Fri","Satur"];
 
 //Storing the to-do list tasks in an array
 
-const items = [];
+// const items = [];
 
-const workItems = [];
+// const workItems = [];
+
+//Creating and Connecting to MongoDB
+
+const mongoDBName = "todolistDB";
+mongoose.connect("mongodb://localhost:27017/" + mongoDBName);
+
+const itemSchema = mongoose.Schema({
+      name : String,
+});
 
 //for static content
 app.use(express.static(__dirname + "/public"));
