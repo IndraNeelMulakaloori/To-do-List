@@ -1,0 +1,124 @@
+/********************************************************************TAG SELECTORS************************************************************/
+html {
+  background-color: #E4E9FD;
+  background-image: -webkit-linear-gradient(65deg, #A683E3 55%, #E4E9FD 50%);
+  min-height: 1000px;
+  
+}
+
+h1 {
+  color: #fff;
+  padding: 10px;
+}
+
+footer {
+  color: white;
+  color: rgba(0, 0, 0, 0.5);
+  text-align: center;
+}
+
+input[type="checkbox"] {
+  margin: 20px;
+}
+
+p {
+  margin: 0;
+  padding: 20px;
+  font-size: 20px;
+  font-weight: 200;
+  color: #3D2C8D;
+}
+
+form {
+  text-align: center;
+  margin-left: 20px;
+}
+
+button {
+  min-height: 50px;
+  width: 50px;
+  border-radius: 50%;
+  border-color: transparent;
+  background-color: #A683E3;
+  color: #fff;
+  font-size: 30px;
+  padding-bottom: 5px;
+  border-width: 0;
+}
+
+input[type="text"] {
+  text-align: center;
+  height: 60px;
+  top: 10px;
+  border: none;
+  background: transparent;
+  font-size: 20px;
+  font-weight: 200;
+  width: 313px;
+  
+}
+
+input[type="text"]:focus {
+  outline: none;
+  box-shadow: inset 0 -3px 0 0 #A683E3;
+  
+}
+
+input:checked+p {
+  text-decoration: line-through;
+  text-decoration-color: #A683E3;
+}
+
+
+::placeholder {
+  color: grey;
+  opacity: 1;
+}
+footer
+{
+  font-family: 'Raleway', sans-serif;
+  color: #351F39;
+}
+/********************************************************************CLASS SELECTORS************************************************************/
+
+.box {
+  font-family: 'Raleway', sans-serif;
+  max-width: 400px;
+  margin: 50px auto;
+  background: white;
+  border-radius: 5px;
+  box-shadow: 5px 5px 15px -5px rgba(0, 0, 0, 0.3);
+}
+
+
+.item {
+  min-height: 100px;
+  display: flex;
+  align-items: center;
+  /* flex-direction: column; */
+  border-bottom: 1px solid #F1F1F1;
+}
+
+.item:last-child {
+  border-bottom: 0;
+}
+
+/********************************************************************** ID SELECTORS ******************************************************************/
+
+#heading {
+  font-family: 'Arvo', serif;
+  background-color: #A12568;
+  text-align: center;
+}
+
+#footer {
+  font-family: 'Arvo', serif;
+  background-color: #351F39;
+  text-align: center;
+}
+
+
+
+
+
+
