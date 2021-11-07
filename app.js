@@ -34,8 +34,16 @@ const itemSchema = new mongoose.Schema({
     name: String,
 });
 
+//CustomList Schema
+const listSchema = new mongoose.Schema({
+    name: String,
+    items: [itemSchema],
+});
+
 //Creating a model from Schema
 const Item = new mongoose.model("item", itemSchema);
+
+const List = new mongoose.model("list", listSchema);
 
 // const firstItem = new Item({
 //     name: "Eat"
@@ -49,10 +57,19 @@ const Item = new mongoose.model("item", itemSchema);
 //     name: "Code",
 // });
 
-const defaultItems = [{name : "Eat"}, 
-                      {name : "Sleep"}, 
-                      {name : "Code"},
-                      {name : "Repeat"}];
+const defaultItems = [{
+        name: "Eat"
+    },
+    {
+        name: "Sleep"
+    },
+    {
+        name: "Code"
+    },
+    {
+        name: "Repeat"
+    }
+];
 
 
 //for static content
@@ -107,6 +124,39 @@ app.get("/", function (request, myServerResponse) {
 
 });
 
+
+app.get("/:listType", function (request, myServerResponse) {
+
+    const listTypeName = request.params.listType;
+    List.findOne({
+        name: listTypeName
+    }, function (err, result) {
+        if (err)
+            console.log(err);
+        else {
+            if (result != null) {
+                myServerResponse.render('list', {
+                    kindOfDay: day,
+                    newListItem: result.items,
+                    listType: listTypeName + " List",
+                    thisYear: year,
+                });
+            } else {
+                const listName = new List({
+                    name: listTypeName,
+                    items: defaultItems,
+                });
+                listName.save();
+                console.log("New List " + listTypeName + " Created succesfully");
+                myServerResponse.redirect("/" + listTypeName);
+            }
+
+        }
+    });
+
+
+});
+
 //This Post request receives data  from both the routes 
 // and redirects to their respective routes
 // according to the list Type
@@ -157,15 +207,7 @@ app.post("/delete", function (request, myServerResponse) {
     myServerResponse.redirect("/");
 });
 
-app.get("/work", function (request, myServerResponse) {
-    myServerResponse.render('list', {
-        kindOfDay: day,
-        newListItem: workItems,
-        listType: 'Work List',
-        thisYear: year,
-    });
 
-});
 
 // app.post("/work",function(request,myServerResponse)
 // {
