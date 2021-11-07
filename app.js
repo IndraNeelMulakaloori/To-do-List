@@ -37,19 +37,22 @@ const itemSchema = new mongoose.Schema({
 //Creating a model from Schema
 const Item = new mongoose.model("item", itemSchema);
 
-const firstItem = new Item({
-    name: "Eat"
-});
+// const firstItem = new Item({
+//     name: "Eat"
+// });
 
-const secondItem = new Item({
-    name: "Sleep"
-});
+// const secondItem = new Item({
+//     name: "Sleep"
+// });
 
-const thirdItem = new Item({
-    name: "Code",
-});
+// const thirdItem = new Item({
+//     name: "Code",
+// });
 
-const defaultItems = [firstItem, secondItem, thirdItem];
+const defaultItems = [{name : "Eat"}, 
+                      {name : "Sleep"}, 
+                      {name : "Code"},
+                      {name : "Repeat"}];
 
 
 //for static content
@@ -115,7 +118,7 @@ app.post("/", function (request, myServerResponse) {
         name: itemName,
     });
     itemDoc.save();
-    
+
     myServerResponse.redirect("/");
 
     // if (request.body.list === 'Work') {
@@ -137,6 +140,21 @@ app.post("/", function (request, myServerResponse) {
 
 
 
+});
+
+
+app.post("/delete", function (request, myServerResponse) {
+    //Post-ItemId from the Form to /Delete route
+    const deleteID = request.body.deleteItem;
+
+    //Find the itemID and delete it from Db
+    Item.findByIdAndRemove(deleteID, function (err) {
+        if (err)
+            console.log(err);
+        else
+            console.log("The item " + deleteID + " was removed succesfully");
+    });
+    myServerResponse.redirect("/");
 });
 
 app.get("/work", function (request, myServerResponse) {

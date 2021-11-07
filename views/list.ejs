@@ -4,14 +4,19 @@
 <div class="box">
 
     <% newListItem.forEach(item => { %>
-    <div class="item">
-        <input type="checkbox">
-        <p><%= item.name %> </p>
-    </div>
+    <!-- List items inside of FORM to submit data  -->
+    <form action="/delete" method="post">
+        <div class="item">
+            <!-- OnCheckboxing (onChange event) the data(ITem id) submits instead of explicit submit button -->
+            <input type="checkbox" name="deleteItem" value="<%=item._id%>" onChange="this.form.submit()">
+            <p><%= item.name %> </p>
+        </div>
+    </form>
     <% }); %>
 
 
-    <form action="/" method="post">
+
+    <form class="item" action="/" method="post">
 
         <!-- <label for="newItem"></label>Enter data -->
         <input type="text" name="newItem" id="newItem" placeholder="New Item" autocomplete="off">
