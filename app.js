@@ -130,7 +130,7 @@ app.get("/:listType", function (request, myServerResponse) {
     const listTypeName = request.params.listType;
     List.findOne({
         name: listTypeName
-    }, function (err, result) {
+    }, async function (err, result) {
         if (err)
             console.log(err);
         else {
@@ -146,7 +146,7 @@ app.get("/:listType", function (request, myServerResponse) {
                     name: listTypeName,
                     items: defaultItems,
                 });
-                listName.save();
+                await listName.save();
                 console.log("New List " + listTypeName + " Created succesfully");
                 myServerResponse.redirect("/" + listTypeName);
             }
@@ -164,12 +164,29 @@ app.post("/", function (request, myServerResponse) {
 
     //Post-Data from FORM and Inserting into dataBase i.e todolistDB 
     const itemName = request.body.newItem;
+    const listName = request.body.list;
+  console.log(listName);
     const itemDoc = new Item({
         name: itemName,
     });
+    //Custom List Insertion of Data and Redirecting
+    if(listName != "Personal"){
+        List.findOne({name : listName},async function(err,foundList)
+        {
+              if(err)
+              console.log(err);
+              else {
+                  foundList.items.push(itemDoc);
+                  foundList.save();
+                  myServerResponse.redirect("/" + listName);
+              }
+        });
+    } 
+    else {
     itemDoc.save();
-
     myServerResponse.redirect("/");
+    }
+    
 
     // if (request.body.list === 'Work') {
     //     workItems.push(item);
@@ -196,15 +213,27 @@ app.post("/", function (request, myServerResponse) {
 app.post("/delete", function (request, myServerResponse) {
     //Post-ItemId from the Form to /Delete route
     const deleteID = request.body.deleteItem;
-
+    const listName = request.body.listType;
+    console.log(listName);
     //Find the itemID and delete it from Db
-    Item.findByIdAndRemove(deleteID, function (err) {
-        if (err)
-            console.log(err);
-        else
-            console.log("The item " + deleteID + " was removed succesfully");
-    });
+    if(listName == "Personal")
+    {
+        Item.findByIdAndRemove(deleteID, function (err) {
+            if (err)
+                console.log(err);
+            else
+                console.log("The item " + deleteID + " was removed succesfully");
+        });
     myServerResponse.redirect("/");
+    }
+    else{
+             List.findOneAndUpdate({name : listName},{$pull : {items : { _id : deleteID } } },function(err,foundList)
+             {
+                            if(!err)
+                            myServerResponse.redirect("/" + listName);
+
+             });
+    }
 });
 
 
