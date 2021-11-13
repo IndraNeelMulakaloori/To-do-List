@@ -3,7 +3,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const calendars = require(__dirname + "/calendar.js");
 const mongoose = require('mongoose');
-
+const _ = require('lodash');
 
 // importing a class from module and using methods
 const calendar = calendars.Cal;
@@ -126,8 +126,11 @@ app.get("/", function (request, myServerResponse) {
 
 
 app.get("/:listType", function (request, myServerResponse) {
+    console.log(request.body);
+    const listTypeName = _.capitalize(request.params.listType);
+    //Prevent chrome form crearing a new List Favicon.ico
+    if (listTypeName === "Favicon.ico") return;
 
-    const listTypeName = request.params.listType;
     List.findOne({
         name: listTypeName
     }, async function (err, result) {
@@ -165,7 +168,6 @@ app.post("/", function (request, myServerResponse) {
     //Post-Data from FORM and Inserting into dataBase i.e todolistDB 
     const itemName = request.body.newItem;
     const listName = request.body.list;
-  console.log(listName);
     const itemDoc = new Item({
         name: itemName,
     });
@@ -227,6 +229,7 @@ app.post("/delete", function (request, myServerResponse) {
     myServerResponse.redirect("/");
     }
     else{
+                                                     //$pull method - Delete an item from an array in mongodb
              List.findOneAndUpdate({name : listName},{$pull : {items : { _id : deleteID } } },function(err,foundList)
              {
                             if(!err)
