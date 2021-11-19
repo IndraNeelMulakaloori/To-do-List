@@ -14,7 +14,7 @@ const year = cal.getYear();
 
 const app = express();
 
-const port = 3000;
+
 
 const days = ["Sun", "Mon", "Tues", "Wednes", "Thurs", "Fri", "Satur"];
 
@@ -83,6 +83,11 @@ app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({
     extended: true
 }));
+
+let port = process.env.PORT;
+if (port == null || port == "") {
+  port = 8000;
+}
 
 app.listen(port, function (request, response) {
     console.log("server started at " + port);
