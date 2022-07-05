@@ -9,9 +9,19 @@
         <div class="item">
             <!-- OnCheckboxing (onChange event) the data(ITem id) submits instead of explicit submit button -->
             <input type="checkbox" name="deleteItem" value="<%=item._id%>" onChange="this.form.submit()">
-            <p><%= item.name %> </p>
+            <p><%= item.name %></p>
         </div>
         <input type="hidden" name="listType" value=<%= listType  %> >
+    </form>
+
+    <form action="/modify" method="post">
+        <div class="modifybtn">
+        
+        <input type="button" name="modifybtn" value="clickHere" onclick="this.form.submit()">
+    </div>
+    <input type="hidden" name="modifyItem" value="<%=item._id%>">
+    <input type="hidden" name="listType" value=<%= listType  %> >
+    
     </form>
     <% }); %>
 

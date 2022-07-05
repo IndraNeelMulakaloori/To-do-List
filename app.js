@@ -249,7 +249,12 @@ app.post("/delete", function (request, myServerResponse) {
 });
 
 
-
+app.post("/modify",function(request, myServerResponse){
+myServerResponse.send("Tapped into edit");
+console.log(request.body);
+const modifyItem = request.body.modifyItem;
+const listType = request.body.listType;
+});
 // app.post("/work",function(request,myServerResponse)
 // {
 //               const item = request.body.newItem;
