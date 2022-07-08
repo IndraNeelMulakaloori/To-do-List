@@ -79,6 +79,7 @@ footer
   font-family: 'Raleway', sans-serif;
   color: #351F39;
 }
+
 /********************************************************************CLASS SELECTORS************************************************************/
 
 .box {
@@ -103,9 +104,17 @@ footer
   border-bottom: 0;
 }
 .modifybtn{
-  display: flex;
-  align-items: flex-end;
-
+  position: relative;
+  right: 0.75rem;
+  
+}
+.modifybtn button{
+  min-height: 20px;
+  width: 30px;
+  border-radius:60%;
+  font-size: 1.25rem;
+  border-color: transparent;
+  background-color: rgb(87, 137, 181);
 }
 /********************************************************************** ID SELECTORS ******************************************************************/
 

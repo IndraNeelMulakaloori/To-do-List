@@ -2,27 +2,38 @@
 
 
 <div class="box">
-
+    <!-- <% var btnid = 0%> -->
     <% newListItem.forEach(item => { %>
     <!-- List items inside of FORM to submit data  -->
+   
     <form action="/delete" method="post">
         <div class="item">
             <!-- OnCheckboxing (onChange event) the data(ITem id) submits instead of explicit submit button -->
             <input type="checkbox" name="deleteItem" value="<%=item._id%>" onChange="this.form.submit()">
-            <p><%= item.name %></p>
-        </div>
+            <input type="text" id = "<%=item._id%>" name="modvalue" value="<%= item.name %>" disabled>
+        
         <input type="hidden" name="listType" value=<%= listType  %> >
     </form>
 
     <form action="/modify" method="post">
         <div class="modifybtn">
-        
-        <input type="button" name="modifybtn" value="clickHere" onclick="this.form.submit()">
+        <!--<input type="text" id="name" name="changevalue" > -->
+        <!-- <span> 
+           
+            <input type="button" id = <%= btnid %>  name="modifybtn" 
+            onclick="sample('<%=item._id%>')"></i></input>
+          
+        </span> -->
+      
+         <button type = "button" name="modifybtn" onclick="sample('<%=item._id%>')"><i class="fa fa-pencil fa-xs "></i></button>
+        </div>
     </div>
-    <input type="hidden" name="modifyItem" value="<%=item._id%>">
+    <input type="hidden" name="modifyid" value="<%=item._id%>">
+    <input type="hidden" name ="modifyvalue" value="<%= item.name %>">
     <input type="hidden" name="listType" value=<%= listType  %> >
     
     </form>
+    <!-- <% btnid += 1  %>  -->
     <% }); %>
 
 
@@ -41,5 +52,20 @@
     <h1><%=listType%> </h1>
 </div>
 
-
+<script>
+    function sample(valueId){
+       var toggleMod =  document.getElementById(valueId);
+    //    var changeTextbtn = document.getElementById(btnid);
+       if(toggleMod.hasAttribute('disabled')){
+       toggleMod.toggleAttribute('disabled',false);
+    //    changeTextbtn.innerHTML = "Edit Content";
+       }
+       else {
+       toggleMod.toggleAttribute('disabled',true);
+    //    changeTextbtn.innerHTML = "Submit";
+       }
+    // console.log(changeTextbtn);
+          
+    }
+</script>
 <%- include ('footer') -%>

@@ -250,10 +250,21 @@ app.post("/delete", function (request, myServerResponse) {
 
 
 app.post("/modify",function(request, myServerResponse){
-myServerResponse.send("Tapped into edit");
+// myServerResponse.send("Tapped into edit");
 console.log(request.body);
 const modifyItem = request.body.modifyItem;
 const listType = request.body.listType;
+
+Item.findByIdAndUpdate(modifyItem,{name : "SleepEdit"},err =>{
+                  if(err)
+                  console.log(err);
+                  else 
+                  console.log("Successfully modified");
+});
+myServerResponse.redirect("/");
+
+// console.log(listType);
+
 });
 // app.post("/work",function(request,myServerResponse)
 // {
