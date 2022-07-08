@@ -2,6 +2,7 @@
 
 
 <div class="box">
+    <!-- btnid for to set id attribute for submission -->
     <% var btnid = 0%>
     <% newListItem.forEach(item => { %>
     <!-- List items inside of FORM to submit data  -->
@@ -14,13 +15,17 @@
         
         <input type="hidden" name="listType" value=<%= listType  %> >
     </form>
-
+ <!-- This modform is to modify items in the list -->
     <form name = "modForm" action="/modify" method="post">
         <div class="modifybtn">
+        <!-- modbtn on clicking enables user to edit the input -->
         <button type = "button" name = "modbtn" onclick="modItem('<%=item._id%>','<%= btnid %>')"><i class="fa fa-pencil fa-xs "></i></button>
+        
+        <!--This btn is for submitting the input-->
         <button type = "button" style = "display: none;" 
         id = "<%= btnid %>"  onclick="submitValue('<%=item._id%>','<%= btnid %>')"></button>
         </div>
+    <!-- Hidden data to send via post method -->
     <input type="hidden" name="modifyid" value="<%=item._id%>">
     <input type="hidden" name ="modifyvalue" value="<%= item.name %>">
     <input type="hidden" name="listType" value=<%= listType  %> >
@@ -37,8 +42,6 @@
 
 
     <form class="item" action="/" method="post">
-
-        <!-- <label for="newItem"></label>Enter data -->
         <input type="text" name="newItem" id="newItem" placeholder="New Item" autocomplete="off">
 
         <button type="submit" name="list" value=<%= listType %>>+</button>
@@ -50,38 +53,5 @@
     <h1><%=listType%> </h1>
 </div>
 
-<script>
-    function submitBtn(btnid) {
-  var chngDisp = document.getElementById(btnid);
-  if (chngDisp.style.display === "none") {
-    chngDisp.style.display = "block";
-  } else {
-    chngDisp.style.display = "none";
-  }
-}
-    function modItem(valueId,btnid){
-       var toggleMod =  document.getElementById(valueId);
-    //    var changeTextbtn = document.getElementById(btnid);
-       if(toggleMod.hasAttribute('disabled')){
-       toggleMod.toggleAttribute('disabled',false);
-    //    changeTextbtn.innerHTML = "Edit Content";
-       submitBtn(btnid);
-       }
-       else {
-        submitBtn(btnid);
-       toggleMod.toggleAttribute('disabled',true);
-       
-    //    changeTextbtn.innerHTML = "Submit";
-       }
-    // console.log(changeTextbtn);
-    }
-    function submitValue(textId, btnid){
-        var changeVal = document.getElementById(textId);
-        var submitVal = document.getElementsByName("modifyvalue");
-        submitVal[btnid].value = changeVal.value;
-        var form = document.getElementsByName("modForm");
-        form[btnid].submit();
-        
-    }
-</script>
+<script src="JS/modScript.js"></script>
 <%- include ('footer') -%>
