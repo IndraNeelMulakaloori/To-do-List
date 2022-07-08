@@ -2,7 +2,7 @@
 
 
 <div class="box">
-    <!-- <% var btnid = 0%> -->
+    <% var btnid = 0%>
     <% newListItem.forEach(item => { %>
     <!-- List items inside of FORM to submit data  -->
    
@@ -15,26 +15,24 @@
         <input type="hidden" name="listType" value=<%= listType  %> >
     </form>
 
-    <form action="/modify" method="post">
+    <form name = "modForm" action="/modify" method="post">
         <div class="modifybtn">
-        <!--<input type="text" id="name" name="changevalue" > -->
-        <!-- <span> 
-           
-            <input type="button" id = <%= btnid %>  name="modifybtn" 
-            onclick="sample('<%=item._id%>')"></i></input>
-          
-        </span> -->
-      
-         <button type = "button" name="modifybtn" onclick="sample('<%=item._id%>')"><i class="fa fa-pencil fa-xs "></i></button>
+        <button type = "button" name = "modbtn" onclick="modItem('<%=item._id%>','<%= btnid %>')"><i class="fa fa-pencil fa-xs "></i></button>
+        <button type = "button" style = "display: none;" 
+        id = "<%= btnid %>"  onclick="submitValue('<%=item._id%>','<%= btnid %>')"></button>
         </div>
-    </div>
     <input type="hidden" name="modifyid" value="<%=item._id%>">
     <input type="hidden" name ="modifyvalue" value="<%= item.name %>">
     <input type="hidden" name="listType" value=<%= listType  %> >
     
     </form>
-    <!-- <% btnid += 1  %>  -->
-    <% }); %>
+   
+</div>
+<% btnid += 1  %> 
+<% }); %>
+    
+    
+  
 
 
 
@@ -53,19 +51,37 @@
 </div>
 
 <script>
-    function sample(valueId){
+    function submitBtn(btnid) {
+  var chngDisp = document.getElementById(btnid);
+  if (chngDisp.style.display === "none") {
+    chngDisp.style.display = "block";
+  } else {
+    chngDisp.style.display = "none";
+  }
+}
+    function modItem(valueId,btnid){
        var toggleMod =  document.getElementById(valueId);
     //    var changeTextbtn = document.getElementById(btnid);
        if(toggleMod.hasAttribute('disabled')){
        toggleMod.toggleAttribute('disabled',false);
     //    changeTextbtn.innerHTML = "Edit Content";
+       submitBtn(btnid);
        }
        else {
+        submitBtn(btnid);
        toggleMod.toggleAttribute('disabled',true);
+       
     //    changeTextbtn.innerHTML = "Submit";
        }
     // console.log(changeTextbtn);
-          
+    }
+    function submitValue(textId, btnid){
+        var changeVal = document.getElementById(textId);
+        var submitVal = document.getElementsByName("modifyvalue");
+        submitVal[btnid].value = changeVal.value;
+        var form = document.getElementsByName("modForm");
+        form[btnid].submit();
+        
     }
 </script>
 <%- include ('footer') -%>

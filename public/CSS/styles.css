@@ -116,6 +116,7 @@ footer
   border-color: transparent;
   background-color: rgb(87, 137, 181);
 }
+
 /********************************************************************** ID SELECTORS ******************************************************************/
 
 #heading {
@@ -130,7 +131,9 @@ footer
   text-align: center;
 }
 
-
+/* #submitbtn{
+  display: none;
+} */
 
 
 

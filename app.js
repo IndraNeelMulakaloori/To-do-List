@@ -252,10 +252,10 @@ app.post("/delete", function (request, myServerResponse) {
 app.post("/modify",function(request, myServerResponse){
 // myServerResponse.send("Tapped into edit");
 console.log(request.body);
-const modifyItem = request.body.modifyItem;
+const modifyItem = request.body.modifyid;
 const listType = request.body.listType;
-
-Item.findByIdAndUpdate(modifyItem,{name : "SleepEdit"},err =>{
+const modifiedVal = request.body.modifyvalue;
+Item.findByIdAndUpdate(modifyItem,{name : modifiedVal},err =>{
                   if(err)
                   console.log(err);
                   else 
