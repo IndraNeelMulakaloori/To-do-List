@@ -247,11 +247,46 @@ app.post("/delete", function (request, myServerResponse) {
 });
 
 
+app.post("/modify",function(request, myServerResponse){
+// myServerResponse.send("Tapped into edit");
+console.log(request.body);
+const modifyId = request.body.modifyid;
+const listName = request.body.listType;
+const modifyVal = request.body.modifyvalue;
+if(listName == "Personal"){
+Item.findByIdAndUpdate(modifyId,{name : modifyVal},err =>{
+                  if(err)
+                  console.log(err);
+                  else 
+                  console.log("Successfully modified");
+});
+myServerResponse.redirect("/");
+}
+else{
+        
+    List.findOneAndUpdate(
+        {"items.id" : modifyId},
+        {
+            "$set" : {items : [{
+                name : modifyVal
+            }]}
+        },
+        (err, foundList) =>{
+                 if(!err){
+                    console.log(foundList);
+                    myServerResponse.redirect("/" + listName);
+                 }
+                 else {
+                    console.log(err);
+                 }
+        });
 
+}
+
+
+
+
+});
 // app.post("/work",function(request,myServerResponse)
 // {
 //               const item = request.body.newItem;
-
-//             workItems.push(item);
-//             myServerResponse.redirect("/work");
-// });
