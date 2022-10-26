@@ -27,9 +27,9 @@ const days = ["Sun", "Mon", "Tues", "Wednes", "Thurs", "Fri", "Satur"];
 //Creating and Connecting to MongoDB
 
 const mongoDBName = "todolistDB";
-mongoose.connect("mongodb://localhost:27017/" + mongoDBName);
+// mongoose.connect("mongodb://localhost:27017/" + mongoDBName);
 //Password @ is replaced with %40 for parsing
-// mongoose.connect("mongodb+srv://IndraNeel:Indraneel%40965@freecluster.x4ha2.mongodb.net/" + mongoDBName);
+mongoose.connect("mongodb+srv://IndraNeel:Indraneel%40965@freecluster.x4ha2.mongodb.net/" + mongoDBName);
 
 //Defining a Schema
 const itemSchema = new mongoose.Schema({
@@ -187,14 +187,12 @@ app.post("/", function (request, myServerResponse) {
               else {
                   foundList.items.push(itemDoc);
                   foundList.save();
-                  
                   myServerResponse.redirect("/" + listName);
               }
         });
     } 
     else {
     itemDoc.save();
-    console.log("Inserted " + itemName + " into DB.");
     myServerResponse.redirect("/");
     }
     
@@ -249,23 +247,7 @@ app.post("/delete", function (request, myServerResponse) {
 });
 
 
-app.post("/modify",function(request, myServerResponse){
-// myServerResponse.send("Tapped into edit");
-console.log(request.body);
-const modifyItem = request.body.modifyid;
-const listType = request.body.listType;
-const modifiedVal = request.body.modifyvalue;
-Item.findByIdAndUpdate(modifyItem,{name : modifiedVal},err =>{
-                  if(err)
-                  console.log(err);
-                  else 
-                  console.log("Successfully modified");
-});
-myServerResponse.redirect("/");
 
-// console.log(listType);
-
-});
 // app.post("/work",function(request,myServerResponse)
 // {
 //               const item = request.body.newItem;
